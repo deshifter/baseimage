@@ -15,7 +15,7 @@ jobs:
       script: docker build --build-arg "UBUNTU_VERSION=${UBUNTU_VERSION}" --tag deshifter/baseimage:${UBUNTU_VERSION} .
     - stage: push docker image
       script:
-        - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+        - echo "$DOCKER_HUB_PASSWORD" | docker login --username "$(DOCKER_HUB_USER)" --password-stdin
         - docker push deshifter/baseimage:${UBUNTU_VERSION}
       if: branch = master
 
