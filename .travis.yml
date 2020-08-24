@@ -12,10 +12,11 @@ env:
 jobs:
   include:
     - stage: build docker image
-      script: docker build -t deshifter/baseimage --build-arg "UBUNTU_VERSION=${UBUNTU_VERSION}" --tag deshifter/baseimage:${UBUNTU_VERSION} .
+      script: docker build --build-arg "UBUNTU_VERSION=${UBUNTU_VERSION}" --tag deshifter/baseimage:${UBUNTU_VERSION} .
     - stage: push docker image
-      script: echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
-      script: docker push deshifter/baseimage:${UBUNTU_VERSION}
+      script:
+        - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+        - docker push deshifter/baseimage:${UBUNTU_VERSION}
       if: branch = master
 
 # Installing a newer Docker version
