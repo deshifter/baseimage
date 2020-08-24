@@ -12,9 +12,12 @@ env:
 jobs:
   include:
     - stage: build docker image
-      script: ./travis-build.sh
+      script: docker build -t deshifter/baseimage --build-arg "UBUNTU_VERSION=$UBUNTU_VERSION" .
     - stage: push docker image
-      script: ./travis-push.sh
+      script: echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+      script: docker images
+      script: docker tag deshifter/baseimage "deshifter/baseimage:$UBUNTU_VERSION"
+      script: docker push deshifter/baseimage
       if: branch = master
 
 # Installing a newer Docker version
